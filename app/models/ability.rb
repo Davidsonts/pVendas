@@ -28,5 +28,16 @@ class Ability
     #
     # See the wiki for details:
     # https://github.com/CanCanCommunity/cancancan/wiki/Defining-Abilities
+    if user
+      if user.kind == 'salesman'
+        can :access, :rails_admin
+        can :read, :dashboard
+        can :read, Product, status: :active
+        can :manage, User, id: user.id
+        can :manage, ProductSale, user_id: user.id
+      elsif user.kind == 'manager'
+        can :manage, :all
+      end
+    end
   end
 end

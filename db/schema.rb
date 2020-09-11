@@ -57,8 +57,8 @@ ActiveRecord::Schema.define(version: 2020_09_11_024614) do
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "kind"
-    t.string "status"
+    t.integer "kind"
+    t.integer "status"
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
