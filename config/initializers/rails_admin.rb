@@ -22,7 +22,87 @@ RailsAdmin.config do |config|
   ## == Gravatar integration ==
   ## To disable Gravatar integration in Navigation Bar set to false
   # config.show_gravatar = true
+  config.model Product do
+    create do
+      field  :name
+      field  :price
+      field  :status
 
+      field :user_id, :hidden do
+        default_value do
+          bindings[:view]._current_user.id
+        end
+      end
+    end
+
+    edit do
+      field  :name
+      field  :price
+      field  :status
+      
+      field :user_id, :hidden do
+        default_value do
+          bindings[:view]._current_user.id
+        end
+      end
+    end
+  end
+  
+  config.model ProductSale do
+    create do
+      field :product_id, :enum do
+        enum do
+          Product.products_active.collect{|c| [c.name, c.id]}
+        end
+      end
+      field  :sale
+      field  :quantity
+      field  :value do 
+        required = true
+      end  
+   
+      field :user_id, :hidden do
+        default_value do
+          bindings[:view]._current_user.id
+        end
+      end
+    end
+
+    edit do
+      field :product_id, :enum do
+        enum do
+          Product.products_active.collect{|c| [c.name, c.id]}
+        end
+      end
+      field  :sale
+      field  :quantity
+      field  :value do 
+        required = true
+      end
+   
+      field :user_id, :hidden do
+        default_value do
+          bindings[:view]._current_user.id
+        end
+      end
+    end
+  end
+
+  config.model Sale do
+    create do
+      field :data
+      field :client_id, :enum do
+        enum do
+          Client.clients_active.collect{|c| [c.name, c.id]}
+        end
+      end
+    end
+  end
+
+  config.model User do
+    exclude_fields :created_at, :updated_at, :encrypted_password, :reset_password_token, :reset_password_sent_at, :remember_created_at
+  end
+  
   config.actions do
     dashboard                     # mandatory
     index                         # mandatory
